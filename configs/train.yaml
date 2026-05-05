@@ -1,0 +1,4 @@
+data:
+  raw_zip: "../midimizer_data/data/raw/maestro-v3.0.0.zip"
+  processed_dir: "data/processed"
+  index_dir: "data/index"

@@ -1,0 +1,5 @@
+data/processed/*
+data/cache/*
+outputs/*
+!data/processed/.gitkeep
+!data/cache/.gitkeep
