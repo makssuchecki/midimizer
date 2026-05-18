@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 import json
+import os
 
 from src.data.dataset import MidiDataset
 from src.model.lstm import LSTMModel
@@ -9,10 +10,10 @@ from src.model.lstm import LSTMModel
 def main():
     with open("data/index/vocab.json") as f:
         vocab = json.load(f)
-
+    
     vocab_size = len(vocab)
 
-    dataset = MidiDataset("data/processed/train_chunks.jsonl")
+    dataset = MidiDataset("data/processed/train_chunks.jsonl", limit=3000)
     loader = DataLoader(dataset, batch_size=8, shuffle=True)
 
     model = LSTMModel(vocab_size)
@@ -42,7 +43,7 @@ def main():
             total_loss += loss.item()
 
         print(f"Epoch {epoch}: loss={total_loss:.4f}")
-
-
+        torch.save(model.state_dict(), f"outputs/lstm_epoch_{epoch}.pt")
+        
 if __name__ == "__main__":
     main()

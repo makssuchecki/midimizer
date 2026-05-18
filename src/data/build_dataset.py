@@ -3,12 +3,12 @@ from pathlib import Path
 from tqdm import tqdm
 
 
-def chunk_tokens(tokens, seq_len=512):
+def chunk_tokens(tokens, seq_len=256):
     for i in range(0, len(tokens) - seq_len, seq_len):
         yield tokens[i:i+seq_len]
 
 
-def build_chunks(input_path: Path, output_path: Path, seq_len=512):
+def build_chunks(input_path: Path, output_path: Path, seq_len=256):
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with input_path.open() as fin, output_path.open("w") as fout:
@@ -24,5 +24,5 @@ if __name__ == "__main__":
     build_chunks(
         Path("data/processed/maestro_tokens.jsonl"),
         Path("data/processed/train_chunks.jsonl"),
-        seq_len=512
+        seq_len=256
     )
