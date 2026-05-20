@@ -12,4 +12,14 @@ pinned: false
 
 # Midimizer
 
-MIDI music generation using LSTM, GRU, and Transformer models trained on the MAESTRO dataset.
+This project implements a deep learning pipeline for generating MIDI music using sequence models such as RNN, LSTM and Transformers.
+
+The model is trained on a MIDI dataset (MAESTRO) and learns to generate music by predicting the next musical event in a sequence.
+
+The pipeline includes:
+- MIDI preprocessing
+- event-based representation
+- tokenization
+- sequence chunking
+- model training
+- MIDI generation
