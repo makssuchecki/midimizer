@@ -6,7 +6,7 @@ def events_to_midi(events, output_path="output.mid", tempo=120):
     instrument = pretty_midi.Instrument(program=0)
 
     current_time = 0.0
-    time_scale = 0.01  # musi pasować do preprocess (100 → 0.01s)
+    time_scale = 0.01
 
     active_notes = {}
 

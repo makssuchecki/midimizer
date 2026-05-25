@@ -3,7 +3,11 @@ import json
 from pathlib import Path
 
 from src.model.lstm import LSTMModel
+from src.model.gru import GRUModel
+from src.model.transformer import TransformerModel
 
+
+from src.utils.midi_writer import events_to_midi
 
 def load_vocab():
     with open("data/index/vocab.json") as f:
@@ -61,12 +65,13 @@ def tokens_to_events(tokens, id_to_token):
 if __name__ == "__main__":
     vocab, id_to_token = load_vocab()
 
-    model = LSTMModel(len(vocab))
-    model.load_state_dict(torch.load("outputs/model.pt"))
+    model = TransformerModel(len(vocab))
+    model.load_state_dict(torch.load("outputs/tra10-3000.pt"))
     model.eval()
 
     tokens = generate(model, start_token=0, length=300)
 
     events = tokens_to_events(tokens, id_to_token)
 
-    print(events[:20])  # na razie debug
+    print(events[:20])
+    events_to_midi(events, "outputs/midi/generated.mid")

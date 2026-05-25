@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 
 
 class MidiDataset(Dataset):
-    def __init__(self, path, limit=3000):
+    def __init__(self, path, limit):
         self.data = []
 
         with open(path) as f:

@@ -1,29 +1,51 @@
+import os
 import torch
 from torch.utils.data import DataLoader
 import json
-import os
 
 from src.data.dataset import MidiDataset
+
 from src.model.lstm import LSTMModel
+from src.model.gru import GRUModel
+from src.model.transformer import TransformerModel
 
 
 def main():
+    # wczytaj vocab
     with open("data/index/vocab.json") as f:
         vocab = json.load(f)
-    
+
     vocab_size = len(vocab)
 
-    dataset = MidiDataset("data/processed/train_chunks.jsonl", limit=3000)
-    loader = DataLoader(dataset, batch_size=8, shuffle=True)
+    # dataset (fast mode)
+    dataset = MidiDataset(
+        "data/processed/train_chunks.jsonl",
+        limit=3000,
+    )
 
-    model = LSTMModel(vocab_size)
+    loader = DataLoader(
+        dataset,
+        batch_size=32,
+        shuffle=True
+    )
+
+    # model
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print("Using device:", device)
+
+    model = TransformerModel(vocab_size).to(device)
+
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = torch.nn.CrossEntropyLoss()
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model.to(device)
+    # folder na modele
+    os.makedirs("outputs", exist_ok=True)
 
-    for epoch in range(5):
+    # best model tracking
+    best_loss = float("inf")
+
+    # trening
+    for epoch in range(10):
         total_loss = 0
 
         for x, y in loader:
@@ -42,8 +64,18 @@ def main():
 
             total_loss += loss.item()
 
-        print(f"Epoch {epoch}: loss={total_loss:.4f}")
-        torch.save(model.state_dict(), f"outputs/lstm_epoch_{epoch}.pt")
-        
+        # średni loss (lepszy niż suma)
+        avg_loss = total_loss / len(loader)
+
+        print(f"Epoch {epoch}: loss={avg_loss:.4f}")
+
+        # zapis najlepszego modelu
+        if avg_loss < best_loss:
+            best_loss = avg_loss
+            torch.save(model.state_dict(), "outputs/best_model.pt")
+
+    print("Training finished.")
+
+
 if __name__ == "__main__":
     main()

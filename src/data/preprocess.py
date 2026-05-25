@@ -11,13 +11,6 @@ from tqdm import tqdm
 
 
 def midi_to_events(midi_bytes: bytes, max_time_shift: int = 100) -> list[dict]:
-    """
-    Convert MIDI bytes into simple event sequence.
-    Event schema:
-    - note_on (pitch, velocity)
-    - note_off (pitch)
-    - time_shift (steps)
-    """
     midi = pretty_midi.PrettyMIDI(io.BytesIO(midi_bytes))
 
     notes = []
@@ -70,14 +63,7 @@ def iter_midi_from_zip(zip_path: Path) -> Iterable[tuple[str, bytes]]:
                     yield member.filename, f.read()
 
 
-def process_dataset(
-    zip_path: Path,
-    output_path: Path,
-    limit: int | None = None,
-) -> None:
-    """
-    Stream-process MIDI files from ZIP and save tokenized events as JSONL.
-    """
+def process_dataset(zip_path: Path,output_path: Path,limit: int | None = None) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with output_path.open("w", encoding="utf-8") as out_f:
