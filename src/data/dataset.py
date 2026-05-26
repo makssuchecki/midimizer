@@ -2,7 +2,10 @@ import json
 import torch
 from torch.utils.data import Dataset
 
-
+'''
+Ładowanie chunków
+setup language modelu
+'''
 class MidiDataset(Dataset):
     def __init__(self, path, limit):
         self.data = []

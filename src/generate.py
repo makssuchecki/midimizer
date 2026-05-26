@@ -6,8 +6,11 @@ from src.model.lstm import LSTMModel
 from src.model.gru import GRUModel
 from src.model.transformer import TransformerModel
 
-
 from src.utils.midi_writer import events_to_midi
+
+'''
+Generowanie plików midi
+'''
 
 def load_vocab():
     with open("data/index/vocab.json") as f:
@@ -66,7 +69,7 @@ if __name__ == "__main__":
     vocab, id_to_token = load_vocab()
 
     model = TransformerModel(len(vocab))
-    model.load_state_dict(torch.load("outputs/tra10-3000.pt"))
+    model.load_state_dict(torch.load("outputs/tra10-10000.pt"))
     model.eval()
 
     tokens = generate(model, start_token=0, length=300)

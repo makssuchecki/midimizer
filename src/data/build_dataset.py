@@ -2,7 +2,9 @@ import json
 from pathlib import Path
 from tqdm import tqdm
 
-
+'''
+Dzielenie długich sekwencji na kawałki
+'''
 def chunk_tokens(tokens, seq_len=256):
     for i in range(0, len(tokens) - seq_len, seq_len):
         yield tokens[i:i+seq_len]

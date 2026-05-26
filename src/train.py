@@ -2,6 +2,7 @@ import os
 import torch
 from torch.utils.data import DataLoader
 import json
+import matplotlib.pyplot as plt
 
 from src.data.dataset import MidiDataset
 
@@ -9,18 +10,25 @@ from src.model.lstm import LSTMModel
 from src.model.gru import GRUModel
 from src.model.transformer import TransformerModel
 
+'''
+Trening
+Pipeline:
+- load vocab
+- load dataset
+- DataLoader
+- model
+- training loop
+'''
 
 def main():
-    # wczytaj vocab
     with open("data/index/vocab.json") as f:
         vocab = json.load(f)
 
     vocab_size = len(vocab)
 
-    # dataset (fast mode)
     dataset = MidiDataset(
         "data/processed/train_chunks.jsonl",
-        limit=3000,
+        limit=10000,
     )
 
     loader = DataLoader(
@@ -29,7 +37,6 @@ def main():
         shuffle=True
     )
 
-    # model
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("Using device:", device)
 
@@ -38,13 +45,11 @@ def main():
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = torch.nn.CrossEntropyLoss()
 
-    # folder na modele
     os.makedirs("outputs", exist_ok=True)
 
-    # best model tracking
     best_loss = float("inf")
+    loss_history = []
 
-    # trening
     for epoch in range(10):
         total_loss = 0
 
@@ -64,17 +69,26 @@ def main():
 
             total_loss += loss.item()
 
-        # średni loss (lepszy niż suma)
         avg_loss = total_loss / len(loader)
+        loss_history.append(avg_loss)
 
         print(f"Epoch {epoch}: loss={avg_loss:.4f}")
 
-        # zapis najlepszego modelu
         if avg_loss < best_loss:
             best_loss = avg_loss
             torch.save(model.state_dict(), "outputs/best_model.pt")
 
     print("Training finished.")
+
+
+    plt.figure()
+    plt.plot(loss_history)
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title("Training Loss")
+    plt.grid()
+
+    plt.show()
 
 
 if __name__ == "__main__":

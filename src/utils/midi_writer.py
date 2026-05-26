@@ -1,6 +1,8 @@
 import pretty_midi
 
-
+'''
+Odbudowywanie midi z eventów i zapis
+'''
 def events_to_midi(events, output_path="output.mid", tempo=120):
     midi = pretty_midi.PrettyMIDI()
     instrument = pretty_midi.Instrument(program=0)

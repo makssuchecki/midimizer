@@ -9,6 +9,9 @@ from typing import Iterable
 import pretty_midi
 from tqdm import tqdm
 
+'''
+Wczytanie danych i zamiana na eventy sekwencyjne
+'''
 
 def midi_to_events(midi_bytes: bytes, max_time_shift: int = 100) -> list[dict]:
     midi = pretty_midi.PrettyMIDI(io.BytesIO(midi_bytes))
@@ -53,9 +56,6 @@ def midi_to_events(midi_bytes: bytes, max_time_shift: int = 100) -> list[dict]:
 
 
 def iter_midi_from_zip(zip_path: Path) -> Iterable[tuple[str, bytes]]:
-    """
-    Yield (filename, midi_bytes) from zip without full extraction.
-    """
     with zipfile.ZipFile(zip_path, "r") as zf:
         for member in zf.infolist():
             if member.filename.endswith((".mid", ".midi")):

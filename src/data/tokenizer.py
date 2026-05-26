@@ -2,7 +2,10 @@ from pathlib import Path
 import json
 from tqdm import tqdm
 
-
+'''
+Budowa vocab,
+Zamiana eventów na id 
+'''
 def event_to_token(event: dict) -> str:
     if event["type"] == "time_shift":
         return f"time_shift_{event['value']}"
