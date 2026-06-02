@@ -28,7 +28,7 @@ def main():
 
     dataset = MidiDataset(
         "data/processed/train_chunks.jsonl",
-        limit=10000,
+        limit=30000,
     )
 
     loader = DataLoader(
@@ -40,7 +40,7 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("Using device:", device)
 
-    model = TransformerModel(vocab_size).to(device)
+    model = GRUModel(vocab_size).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -50,7 +50,7 @@ def main():
     best_loss = float("inf")
     loss_history = []
 
-    for epoch in range(10):
+    for epoch in range(20):
         total_loss = 0
 
         for x, y in loader:
@@ -76,7 +76,7 @@ def main():
 
         if avg_loss < best_loss:
             best_loss = avg_loss
-            torch.save(model.state_dict(), "outputs/best_model.pt")
+            torch.save(model.state_dict(), "outputs/best_model_tr.pt")
 
     print("Training finished.")
 

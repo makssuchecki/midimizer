@@ -3,11 +3,11 @@ from __future__ import annotations
 import io
 import json
 import zipfile
+from tqdm import tqdm
 from pathlib import Path
 from typing import Iterable
 
 import pretty_midi
-from tqdm import tqdm
 
 '''
 Wczytanie danych i zamiana na eventy sekwencyjne

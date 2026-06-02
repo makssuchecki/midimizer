@@ -1,11 +1,6 @@
 import torch
 import torch.nn as nn
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
-print("CUDA available:", torch.cuda.is_available())
-print("Device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU")
-
 
 class LSTMModel(nn.Module):
     def __init__(self, vocab_size, embed_dim=256, hidden_dim=512):

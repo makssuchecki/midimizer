@@ -68,8 +68,8 @@ def tokens_to_events(tokens, id_to_token):
 if __name__ == "__main__":
     vocab, id_to_token = load_vocab()
 
-    model = TransformerModel(len(vocab))
-    model.load_state_dict(torch.load("outputs/tra10-10000.pt"))
+    model = GRUModel(len(vocab))
+    model.load_state_dict(torch.load("outputs/trained/20-30000/gru20-30000.pt"))
     model.eval()
 
     tokens = generate(model, start_token=0, length=300)
