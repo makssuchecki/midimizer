@@ -5,3 +5,5 @@ outputs/*
 !outputs/trained/**
 !data/processed/.gitkeep
 !data/cache/.gitkeep
+__pycache__/
+*.pyc
