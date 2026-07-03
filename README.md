@@ -14,10 +14,17 @@ pinned: false
 
 A deep learning pipeline for generating piano music in MIDI format. Sequence models (LSTM, GRU, Transformer) are trained on the MAESTRO dataset to predict musical events one step at a time — the same idea as a language model, but for music.
 
+Live demo: https://huggingface.co/spaces/makssuchecki/midimizer
 
 ## How it works
 
 MIDI files are converted into a flat sequence of discrete events:
+
+| Event | Example token |
+|---|---|
+| Note on | `note_on_60_80` (pitch 60, velocity 80) |
+| Note off | `note_off_60` |
+| Time shift | `time_shift_5` (advance 50ms) |
 
 These tokens are mapped to integer IDs and the model is trained to predict the next token given all previous ones (next-token prediction / language modelling). At generation time, tokens are sampled autoregressively and decoded back into a `.mid` file.
 
@@ -37,7 +44,6 @@ These tokens are mapped to integer IDs and the model is trained to predict the n
 git clone https://github.com/makssuchecki/midimizer.git
 cd midimizer
 pip install -r requirements.txt
-pip install torch
 ```
 
 Download the MAESTRO v3 dataset and place the zip at `../midimizer_data/data/raw/maestro-v3.0.0.zip`.
