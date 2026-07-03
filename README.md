@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 title: Midimizer
 emoji: 🎹
@@ -13,10 +12,7 @@ pinned: false
 
 # Midimizer
 
-This project implements a deep learning pipeline for generating MIDI music using sequence models such as RNN, LSTM and Transformers.
-=======
 This project implements a deep learning pipeline for generating MIDI music using sequence models such as LSTM, GRU and Transformer.
->>>>>>> 9014acf (chore: comments and small tweaks)
 
 The model is trained on a MIDI dataset (MAESTRO) and learns to generate music by predicting the next musical event in a sequence.
 
